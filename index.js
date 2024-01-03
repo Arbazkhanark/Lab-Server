@@ -3,6 +3,7 @@ const dbConnection = require("./database");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const cors=require("cors");
+const path=require("path")
 
 const userRouter=require("./routers/userRouter")
 const adminRouter=require("./routers/adminRouter")
@@ -13,6 +14,7 @@ const workerRouter=require("./routers/workerRouter")
 
 const app=express();
 dbConnection()
+app.use(express.static(path.resolve(__dirname,"dist")))
 
 app.use(express.json())
 app.use(cors({
@@ -21,6 +23,11 @@ app.use(cors({
   }));
   
 app.use(cookieParser())
+
+
+app.get("/",(req,res)=>{
+  res.sendFile(path.join(__dirname,"dist",'index.html'))
+})
 
 // app.use(require("./routers/userRouter"))
 // app.use(require("./routers/adminRouter"))
